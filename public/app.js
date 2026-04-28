@@ -33,6 +33,7 @@ require(['vs/editor/editor.main'], () => {
 
   loadTask();
   connectWS();
+  initResizers();
 });
 
 function lang(filePath) {
@@ -217,4 +218,60 @@ function escHtml(s) {
 
 function stripAnsi(s) {
   return s.replace(/\x1B\[[0-9;]*[a-zA-Z]/g, '');
+}
+
+// ---------------------------------------------------------------------------
+// Resizable panes
+// ---------------------------------------------------------------------------
+
+function initResizers() {
+  // Sidebar — drag left/right to resize
+  const sidebarResizer = document.getElementById('sidebar-resizer');
+  sidebarResizer.addEventListener('mousedown', e => {
+    e.preventDefault();
+    const startX     = e.clientX;
+    const startWidth = document.getElementById('sidebar').getBoundingClientRect().width;
+    sidebarResizer.classList.add('active');
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+
+    function onMove(e) {
+      const width = Math.max(120, Math.min(500, startWidth + (e.clientX - startX)));
+      document.body.style.gridTemplateColumns = `${width}px 5px 1fr`;
+    }
+    function onUp() {
+      sidebarResizer.classList.remove('active');
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+    }
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+  });
+
+  // Terminal — drag up/down to resize
+  const terminalResizer = document.getElementById('terminal-resizer');
+  terminalResizer.addEventListener('mousedown', e => {
+    e.preventDefault();
+    const startY      = e.clientY;
+    const startHeight = document.getElementById('terminal').getBoundingClientRect().height;
+    terminalResizer.classList.add('active');
+    document.body.style.cursor = 'row-resize';
+    document.body.style.userSelect = 'none';
+
+    function onMove(e) {
+      const height = Math.max(80, Math.min(window.innerHeight * 0.7, startHeight + (startY - e.clientY)));
+      document.body.style.gridTemplateRows = `42px 1fr ${height}px`;
+    }
+    function onUp() {
+      terminalResizer.classList.remove('active');
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+    }
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+  });
 }
