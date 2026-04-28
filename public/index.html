@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coding Task</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header id="header">
+    <span id="task-name">Loading…</span>
+    <div id="controls">
+      <span id="save-status"></span>
+      <button id="btn-run">&#9654; Run</button>
+      <button id="btn-kill" disabled>&#9632; Stop</button>
+    </div>
+  </header>
+
+  <nav id="sidebar">
+    <div class="section-label">EDITABLE</div>
+    <ul id="file-list-editable"></ul>
+    <div class="section-label" id="label-readonly" style="display:none">READ-ONLY</div>
+    <ul id="file-list-readonly"></ul>
+  </nav>
+
+  <main id="editor-container"></main>
+
+  <div id="terminal">
+    <div id="terminal-header">
+      <span>Output</span>
+      <button id="btn-clear">Clear</button>
+    </div>
+    <pre id="terminal-output"></pre>
+  </div>
+
+  <script src="/vs/loader.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

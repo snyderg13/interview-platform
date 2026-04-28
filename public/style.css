@@ -1,0 +1,120 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:           #1e1e1e;
+  --bg-sidebar:   #252526;
+  --bg-header:    #3c3c3c;
+  --bg-term:      #0d0d0d;
+  --border:       #3c3c3c;
+  --text:         #cccccc;
+  --text-dim:     #888;
+  --accent:       #0e639c;
+  --accent-hover: #1177bb;
+}
+
+html, body { height: 100%; background: var(--bg); color: var(--text);
+  font-family: 'Segoe UI', system-ui, sans-serif; font-size: 13px; }
+
+body {
+  display: grid;
+  grid-template-areas:
+    "header   header"
+    "sidebar  editor"
+    "sidebar  terminal";
+  grid-template-rows: 42px 1fr 220px;
+  grid-template-columns: 200px 1fr;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ── Header ── */
+#header {
+  grid-area: header;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px;
+  background: var(--bg-header);
+  border-bottom: 1px solid var(--border);
+}
+
+#task-name { font-weight: 600; font-size: 14px; }
+
+#controls { display: flex; align-items: center; gap: 8px; }
+
+#save-status { font-size: 11px; color: var(--text-dim); min-width: 36px; text-align: right; }
+
+button {
+  padding: 4px 12px; border: none; border-radius: 3px;
+  cursor: pointer; font-size: 12px; font-weight: 600;
+}
+#btn-run  { background: var(--accent); color: #fff; }
+#btn-run:hover:not(:disabled)  { background: var(--accent-hover); }
+#btn-kill { background: #6b1414; color: #fff; }
+#btn-kill:hover:not(:disabled) { background: #8b1e1e; }
+button:disabled { opacity: 0.4; cursor: default; }
+
+/* ── Sidebar ── */
+#sidebar {
+  grid-area: sidebar;
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 8px 0;
+}
+
+.section-label {
+  padding: 10px 12px 4px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+  color: var(--text-dim); text-transform: uppercase;
+}
+
+.file-tab {
+  list-style: none;
+  padding: 5px 12px 5px 20px;
+  cursor: pointer;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.file-tab:hover              { background: rgba(255,255,255,0.06); }
+.file-tab.active             { background: var(--bg); color: #fff; }
+.file-tab.readonly           { color: var(--text-dim); }
+.file-tab.readonly::before   { content: '⊘ '; font-size: 10px; }
+
+/* ── Editor ── */
+#editor-container { grid-area: editor; overflow: hidden; }
+
+/* ── Terminal ── */
+#terminal {
+  grid-area: terminal;
+  display: flex; flex-direction: column;
+  background: var(--bg-term);
+  border-top: 1px solid var(--border);
+  overflow: hidden;
+}
+
+#terminal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 4px 12px;
+  background: var(--bg-header);
+  border-bottom: 1px solid var(--border);
+  font-size: 11px; color: var(--text-dim);
+}
+#terminal-header button {
+  background: transparent; color: var(--text-dim);
+  font-size: 11px; font-weight: 400; padding: 2px 6px;
+}
+#terminal-header button:hover { color: var(--text); }
+
+#terminal-output {
+  flex: 1; overflow-y: auto;
+  padding: 8px 12px;
+  font-family: 'Cascadia Code', 'Fira Mono', Consolas, monospace;
+  font-size: 12px; line-height: 1.5;
+  white-space: pre-wrap; word-break: break-all;
+}
+
+/* Output classes */
+.t-cmd    { color: #6dcef5; }
+.t-stderr { color: #f1c40f; }
+.t-ok     { color: #4ec94e; }
+.t-err    { color: #f44747; }
+.t-pass   { color: #4ec94e; font-weight: bold; }
+.t-fail   { color: #f44747; font-weight: bold; }

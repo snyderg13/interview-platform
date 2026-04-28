@@ -1,0 +1,14 @@
+{
+  "name": "Firmware Engineer Coding Task",
+  "run": "make run",
+  "editable": [
+    "parser.c",
+    "parser.h",
+    "test_parser.c"
+  ],
+  "show": [
+    "README.md",
+    "docs/stage1_overview.md",
+    "docs/stage2_requirements.md"
+  ]
+}
